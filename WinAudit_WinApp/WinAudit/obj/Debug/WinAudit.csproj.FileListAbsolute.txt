@@ -1,0 +1,14 @@
+D:\WinAudit\WinAudit\bin\Debug\WinAudit.exe.config
+D:\WinAudit\WinAudit\bin\Debug\WinAudit.exe
+D:\WinAudit\WinAudit\bin\Debug\WinAudit.pdb
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.Form1.resources
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.Properties.Resources.resources
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.csproj.GenerateResource.Cache
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.exe
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.pdb
+D:\WinAudit\WinAudit\bin\Debug\WinAudit.exe.manifest
+D:\WinAudit\WinAudit\bin\Debug\WinAudit.application
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.exe.manifest
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.application
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.csprojResolveAssemblyReference.cache
+D:\WinAudit\WinAudit\obj\Debug\WinAudit.frmUserInfo.resources
