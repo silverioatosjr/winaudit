@@ -1,0 +1,97 @@
+﻿@model TechHelperPOC.Web.Models.LinuxInfo
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Linux Audit Uploader</h2>
+
+@using (Html.BeginForm("Create", "LinuxInfoes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="well">
+        <div class="form-horizontal">
+            <h4>User Information</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Technician, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Technician, new { htmlAttributes = new { @class = "form-control", placeholder = "Technician Name" } })
+                            @Html.ValidationMessageFor(model => model.Technician, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Client, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Client, new { htmlAttributes = new { @class = "form-control", placeholder = "Client" } })
+                            @Html.ValidationMessageFor(model => model.Client, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Site, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Site, new { htmlAttributes = new { @class = "form-control", placeholder = "Site" } })
+                            @Html.ValidationMessageFor(model => model.Site, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OS, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.OS, new { htmlAttributes = new { @class = "form-control", placeholder = "Operating System" } })
+                            @Html.ValidationMessageFor(model => model.OS, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MachineName, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.MachineName, new { htmlAttributes = new { @class = "form-control", placeholder = "Machine Name" } })
+                            @Html.ValidationMessageFor(model => model.MachineName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ScannedDate, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.ScannedDate, new { htmlAttributes = new { @class = "form-control", placeholder = "MM/DD/YYYY" } })
+                            @Html.ValidationMessageFor(model => model.ScannedDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <hr />
+            <div class="col-md-12">
+                <h4>NOTE: Upload only html file</h4>
+                @Html.Label("File", htmlAttributes: new { @class = "control-label col-md-1" })
+                @Html.Raw("<input id='xmlUploader' type='file' name='xmlUploader' class='form-control col-md-4'/>")
+                @Html.Raw("<input type='submit' value='Submit' class='form-control col-md-4 btn-info' />")
+            </div>
+        </div>
+
+
+    </div>
+}

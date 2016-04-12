@@ -1,0 +1,152 @@
+﻿@model IEnumerable<TechHelperPOC.Web.Models.SystemInfo>
+
+@{
+    ViewBag.Title = "System Overview";
+}
+@{
+    if (ViewBag.Message != "Search Computer!")
+    {
+        <div class="well" style="margin-top:17px;">
+            <h3>@ViewBag.Machine System Overview </h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PropertyName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PropertyValue)
+                    </th>
+                </tr>
+                @{
+                int totalDiskSize = 0;
+                var total = new float();
+                var totalS = string.Empty;
+                string localTime = string.Empty;
+                }
+                @foreach (var item in Model)
+                {
+                    string PropertyNameSplit;
+                    PropertyNameSplit = string.Concat(item.PropertyName.Select(c => char.IsUpper(c) ? " " + c.ToString() : c.ToString()))
+                            .TrimStart();
+                    <tr>
+                    @{
+                    if (item.PropertyName == "Size")
+                    {
+                        var tdSize = (item.PropertyValue.AsFloat()) / (1024 * 1024 * 1024);
+                        totalDiskSize += (int)tdSize;
+                    }
+                    else if (item.PropertyName == "Capacity")
+                    {
+
+                        total += (item.PropertyValue.AsFloat()) / (1024 * 1024);
+                    }
+                    else if ((item.PropertyName == "Year" || item.PropertyName == "Month"
+                            || item.PropertyName == "Day" || item.PropertyName == "Hour"
+                            || item.PropertyName == "Minute" || item.PropertyName == "Second"))
+                    {
+                        if (item.PropertyName == "Year" || item.PropertyName == "Month")
+                        {
+                            localTime += item.PropertyValue + "-";
+                        }
+                        else if (item.PropertyName == "Day")
+                        {
+                            localTime += item.PropertyValue + " ";
+                        }
+                        else if (item.PropertyName == "Hour" || item.PropertyName == "Minute")
+                        {
+                            localTime += item.PropertyValue + ":";
+                        }
+                        else
+                        {
+                            localTime += item.PropertyValue;
+                        }
+                    }
+                    else
+                    {
+                        if (item.PropertyName == "Name" && item.DisplayGroup == "System Overview" && item.ManagementGroup == "Win32_Processor")
+                        {
+                            <td>
+                                @Html.DisplayName("Processor Description")
+                            </td>
+                        }
+                        else if (item.ManagementGroup == "Win32_ComputerSystemProduct" && item.PropertyName == "Name")
+                        {
+                            <td>
+                                @Html.DisplayName("Asset Tag")
+                            </td>
+                        }
+                        else if (item.ManagementGroup == "Win32_ComputerSystemProduct" && item.PropertyName == "Version")
+                        {
+                            <td>
+                                @Html.DisplayName("Model")
+                            </td>
+                        }
+                        else if (item.PropertyName == "Caption")
+                        {
+                            <td>
+                                @Html.DisplayName("Operating System")
+                            </td>
+                        }
+                        else if (item.PropertyName == "Version" && item.DisplayGroup == "System Overview")
+                        {
+                            <td>
+                                @Html.DisplayName("BIOS Version")
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => PropertyNameSplit)
+                            </td>
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PropertyValue)
+                        </td>
+                    }
+                   }
+                    </tr>
+                }
+              @{
+                  totalS = total.ToString() + "MB";
+               }
+                <tr>
+                    <td>
+                        @Html.DisplayName("Total Memory")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => totalS)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Total Hard Drive")
+                    </td>
+                    <td>
+                        @{
+                        var t = totalDiskSize.ToString() + "GB";
+                        }
+                        @Html.DisplayFor(modelItem => t)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayName("Local Time")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => localTime)
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog" style="width:150px; padding:0px; margin-top:10%;">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/Scripts/SaveInfor.js")
+}

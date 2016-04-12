@@ -1,0 +1,14 @@
+﻿@model TechHelperPOC.Web.Models.SystemInfo
+    <div class="modal-body"  >
+        @using (Html.BeginForm())
+        {
+           <input id="save" type="submit" hidden="hidden" />
+        }
+        <span id="progress" class="text-center" style="display: none;">
+
+            <img src="~/Images/prog.gif" /> 
+        </span>
+        <p class="text-center">Please wait...</p>
+    </div>
+
+   

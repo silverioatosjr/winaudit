@@ -1,0 +1,18 @@
+﻿@model TechHelperPOC.Web.Models.SystemInfo
+
+@{
+    ViewBag.Title = "GetInformation";
+}
+
+<h2>GetInformation</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

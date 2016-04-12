@@ -1,0 +1,76 @@
+﻿@model IEnumerable<TechHelperPOC.Web.Models.SystemInfo>
+
+@{
+    ViewBag.Title = "Physical Disk";
+}
+@{
+    if (ViewBag.Message != "Search Computer!")
+    {
+        <div class="well" style="margin-top:17px;">
+            <h3>@ViewBag.Machine Physical Disk</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PropertyName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PropertyValue)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    string PropertyNameSplit;
+                    PropertyNameSplit = string.Concat(item.PropertyName.Select(c => char.IsUpper(c) ? " " + c.ToString() : c.ToString()))
+                            .TrimStart();
+                    <tr>
+                    @{
+                    if (item.Sequence == 1)
+                    {
+                        <td class="alert-info">
+                            @Html.DisplayFor(modelItem => PropertyNameSplit)
+                        </td>
+                        <td class="alert-info">
+                            @Html.DisplayFor(modelItem => item.PropertyValue)
+                        </td>
+                    }
+                    else
+                    {
+                        if (item.PropertyName == "Size")
+                        {
+                            var size = (item.PropertyValue.AsFloat()) / (1024 * 1024 * 1024);
+                            size = (int)size;
+                            var dSize = size.ToString() + "GB";
+                            <td style="word-break: break-all;">
+                                @Html.DisplayFor(modelItem => PropertyNameSplit)
+                            </td>
+                            <td style="word-break: break-all;">
+                                @Html.DisplayFor(modelItem => dSize)
+                            </td>
+                        }
+                        else
+                        {
+                            <td style="word-break: break-all;">
+                                @Html.DisplayFor(modelItem => PropertyNameSplit)
+                            </td>
+                            <td style="word-break: break-all;">
+                                @Html.DisplayFor(modelItem => item.PropertyValue)
+                            </td>
+                        }
+                    }
+}
+                    </tr>
+                }
+            </table>
+        </div>
+    }}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog" style="width:150px; padding:0px; margin-top:10%;">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/Scripts/SaveInfor.js")
+}

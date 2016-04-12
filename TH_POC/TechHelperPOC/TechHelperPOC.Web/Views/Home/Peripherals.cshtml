@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TechHelperPOC.Web.Models.SystemInfo>
+
+@{
+
+    if (ViewBag.Message != "Search Computer!") {
+<div class="well" style="margin-top:17px;">
+    <h3>@ViewBag.Machine Peripherals</h3>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyValue)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayGroup)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PropertyValue)
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+}}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog" style="width:150px; padding:0px; margin-top:10%;">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/Scripts/SaveInfor.js")
+}

@@ -1,0 +1,48 @@
+﻿    @using TechHelperPOC.Web.Models;
+    @using Microsoft.AspNet.Identity;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Manage Account</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body >
+    @{
+        ViewBag.Title = "Manage Account";
+    }
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2" style="background-color: #5bc0de; color:#ffffff; border-radius:5px; border-radius:5px; border-width:3px; border-color:#ffffff; border-style:solid;">
+                <h2>@ViewBag.Title.</h2>
+
+                <p class="text-success">@ViewBag.StatusMessage</p>
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (ViewBag.HasLocalPassword)
+                        {
+                            @Html.Partial("_ChangePasswordPartial")
+                        }
+                        else
+                        {
+                            @Html.Partial("_SetPasswordPartial")
+                        }
+
+                        @*<section id="externalLogins">
+                                @Html.Action("RemoveAccountList")
+                                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+                            </section>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,357 @@
+﻿@model IEnumerable<TechHelperPOC.Web.Models.SystemInfo>
+
+@{
+    ViewBag.Title = "Cloudstaff Tech Helper";
+}
+@using (Html.BeginForm("GetInformation", "Home", FormMethod.Post, new { id = "only" }))
+{
+ 
+}
+
+<div>
+    <h2 class="margin-top:0; padding-top:0;">Windows</h2>
+    <div class="row" style="display:block" id="searButton">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+        {
+            <div class="col-md-2">
+                <div class="input-group-sm">
+                    <span class="input-group-btn">
+                        @Html.DisplayName("Machine Name")
+                    </span>
+                    <span class="" id="machine">
+                        @Html.DropDownList("machineName", null, htmlAttributes: new { @class = "form-control", id = "machineName", @onchange = "javascript:GetMacAddress(this.value);" })
+                        @*@Html.DropDownList("scannedDate", null, htmlAttributes: new { @class = "form-control", name = "scannedDate" })*@
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group-sm">
+                    <span class="input-group-btn">
+                        @Html.DisplayName("Mac Address")
+                    </span>
+                    <span>
+                        @Html.DropDownList("macAddress", null, htmlAttributes: new { @class = "form-control", name = "macAddress", id = "macAddress", @onchange = "javascript:GetScannedDate(this.value);" })
+
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group-sm">
+                    <span class="input-group-btn">
+                        @Html.DisplayName("Scanned Date")
+                    </span>
+                    <span>
+                        @Html.DropDownList("scannedDate", null, htmlAttributes: new { @class = "form-control", name = "scannedDate", id = "scannedDate" })
+                        @*<select class="form-control" name="scannedDate" id="scannedDate"  onchange="javascript:LoadInfo();"></select>*@
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="input-group-sm">
+                    <span class="input-group-btn">
+                        @Html.DisplayName("Search")
+                    </span>
+                    <span>
+                        <button class="btn btn-info form-control-static" id="search" type="submit">SEARCH</button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-3 pull-right">
+                <div class="input-group-sm" style="float:right">
+                    <span class="input-group-btn">
+                        @Html.DisplayName("Run winaudit on your Computer")
+                    </span>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.Raw("<a href='/File/Cloudstaff_WinAudit.rar' id='download'> <span class='btn btn-info form-control'  style='float:right;'><span class='glyphicon glyphicon-download'></span> DOWNLOAD WINAUDIT</span> </a>")
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+        
+<p class="alert-danger"><h2 id="noinfo" class="alert-danger">@ViewBag.Message</h2></p>
+
+@{
+    
+    if (ViewBag.Message != "Search Computer!")
+    {
+        
+        <div style="margin-top:15px;">
+            <h3>@ViewBag.Machine System Information</h3>
+            <table class="table table-bordered">
+                @{
+        int totalDiskSize = 0;
+        var total = new float();
+        var totalS = string.Empty;
+        bool checker = false;
+        string localTime = string.Empty;
+        string PropertyNameSplit;
+                }
+                @foreach (var item in Model)
+                {
+                    PropertyNameSplit = string.Concat(item.PropertyName.Select(c => char.IsUpper(c) ? " " + c.ToString() : c.ToString()))
+                             .TrimStart();
+
+                    if (ViewBag.Header != item.DisplayGroup)
+                    {
+                        ViewBag.Header = item.DisplayGroup;
+                        if (item.DisplayGroup == "System Overview")
+                        {
+                            checker = true;
+                        }
+
+                        <tr><th colspan="2" class="btn-info"><center>@ViewBag.Header</center></th></tr>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PropertyName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PropertyValue)
+                            </th>
+                        </tr>
+                    }
+
+                    <tr>
+                        @{
+                    if (item.PropertyName == "Version" && item.DisplayGroup == "System Overview" && item.ManagementGroup == "Win32_BIOS")
+                    {
+                        <td>
+                            @Html.DisplayName("BIOS Version")
+                        </td>
+
+                    }
+                    else if (item.ManagementGroup == "Win32_OperatingSystem" && item.PropertyName == "Caption" && item.DisplayGroup == "System Overview")
+                    {
+                        <td>
+                            @Html.DisplayName("Operating System")
+                        </td>
+
+                    }
+                    else if (item.ManagementGroup == "Win32_ComputerSystemProduct" && item.PropertyName == "Name" && item.DisplayGroup == "System Overview")
+                    {
+                        <td>
+                            @Html.DisplayName("Asset Tag")
+                        </td>
+                    }
+                    else if (item.ManagementGroup == "Win32_Processor" && item.PropertyName == "Name" && item.DisplayGroup == "System Overview")
+                    {
+                        <td>
+                            @Html.DisplayName("Processor Description")
+                        </td>
+                    }
+                    else if (item.ManagementGroup == "Win32_ComputerSystemProduct" && item.PropertyName == "Version" && item.DisplayGroup == "System Overview")
+                    {
+                        <td>
+                            @Html.DisplayName("Model")
+                        </td>
+                    }
+                    else if (item.ManagementGroup == "Win32_OperatingSystem" && item.PropertyName == "Caption" && item.DisplayGroup == "Operating System")
+                    {
+                        <td>
+                            @Html.DisplayName("Name")
+                        </td>
+                    }
+                    else if (item.PropertyName == "Size" && item.ManagementGroup == "Win32_DiskDrive" && item.DisplayGroup == "System Overview")
+                    {
+                        var tdSize = (item.PropertyValue.AsFloat()) / (1024 * 1024 * 1024);
+                        totalDiskSize += (int)tdSize;
+
+                    }
+
+                    else if (item.PropertyName == "Capacity" && item.ManagementGroup == "Win32_PhysicalMemory" && item.DisplayGroup == "System Overview")
+                    {
+                        total += (item.PropertyValue.AsFloat()) / (1024 * 1024);
+
+                    }
+                    else if ((item.DisplayGroup == "System Overview" && (item.PropertyName == "Year" || item.PropertyName == "Month"
+                        || item.PropertyName == "Day" || item.PropertyName == "Hour" || item.PropertyName == "Minute" || item.PropertyName == "Second")))
+                    {
+
+                        if (item.PropertyName == "Year" || item.PropertyName == "Month")
+                        {
+                            localTime += item.PropertyValue + "-";
+                        }
+                        else if (item.PropertyName == "Day")
+                        {
+                            localTime += item.PropertyValue + " ";
+                        }
+                        else if (item.PropertyName == "Hour" || item.PropertyName == "Minute")
+                        {
+                            localTime += item.PropertyValue + ":";
+                        }
+                        else
+                        {
+
+                            localTime += item.PropertyValue;
+                        }
+                    }
+
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => PropertyNameSplit)
+                        </td>
+                    }
+                        }
+                        @{
+                    //for hardrive, memory, and time
+                    if ((item.PropertyName == "Capacity" && item.ManagementGroup == "Win32_PhysicalMemory" && item.DisplayGroup == "System Overview")
+                        || (item.PropertyName == "Size" && item.ManagementGroup == "Win32_DiskDrive" && item.DisplayGroup == "System Overview")
+                        || (item.DisplayGroup == "System Overview" && (item.PropertyName == "Year" || item.PropertyName == "Month"
+                        || item.PropertyName == "Day" || item.PropertyName == "Hour" || item.PropertyName == "Minute" || item.PropertyName == "Second")))
+                    {
+                    }
+                    else if ((item.DisplayGroup == "Operating System" && item.PropertyName == "InstallDate") ||
+                        (item.DisplayGroup == "BIOS Version" && item.PropertyName == "ReleaseDate") ||
+                       (item.DisplayGroup == "Network Adapter" && (item.PropertyName == "DHCPLeaseExpires" || item.PropertyName == "DHCPLeaseObtained")))
+                    {
+                        var year = item.PropertyValue.Substring(0, 4);
+                        var month = item.PropertyValue.Substring(4, 2);
+                        var day = item.PropertyValue.Substring(6, 2);
+                        var hour = item.PropertyValue.Substring(8, 2);
+                        var minute = item.PropertyValue.Substring(10, 2);
+                        var second = item.PropertyValue.Substring(12, 2);
+                        var dateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+                        <td>
+                            @Html.DisplayFor(modelItem => dateTime)
+                        </td>
+                    }
+
+                    else if ((item.DisplayGroup == "Physical Disk" && item.PropertyName == "Size")
+                            || (item.DisplayGroup == "Logical Disk" &&
+                            (item.PropertyName == "Size" || item.PropertyName == "FreeSpace")))
+                    {
+                        var size = (item.PropertyValue.AsFloat()) / (1024 * 1024 * 1024);
+                        size = (int)size;
+                        var dSize = size.ToString() + "GB";
+
+                        <td>
+                            @Html.DisplayFor(modelItem => dSize)
+                        </td>
+                    }
+
+                    else if (item.DisplayGroup == "Installed Software" && item.PropertyName == "InstallDate")
+                    {
+                        var year = item.PropertyValue.Substring(0, 4);
+                        var month = item.PropertyValue.Substring(4, 2);
+                        var day = item.PropertyValue.Substring(6, 2);
+
+                        var dateTime = year + "-" + month + "-" + day;
+                        <td>
+                            @Html.DisplayFor(modelItem => dateTime)
+                        </td>
+                    }
+                    else if (item.DisplayGroup == "Memory" && (item.PropertyName == "Capacity" || item.PropertyName == "FreePhysicalMemory"))
+                    {
+                        string memory;
+                        if (item.PropertyName == "Capacity")
+                        {
+                            memory = ((item.PropertyValue.AsFloat()) / (1024 * 1024)).ToString() + " MB";
+                        }
+                        else
+                        {
+                            memory = ((item.PropertyValue.AsInt()) / 1024).ToString() + " MB";
+                        }
+                        <td>
+                            @Html.DisplayFor(modelItem => memory)
+                        </td>
+                    }
+                    else if (item.DisplayGroup == "Routing table" && item.PropertyName == "Age")
+                    {
+                        int remainder;
+                        int day;
+                        int hour;
+                        int min;
+                        day = item.PropertyValue.AsInt() / 86400;
+                        remainder = item.PropertyValue.AsInt() % 86400;
+                        hour = remainder / 3600;
+                        remainder = remainder % 3600;
+                        min = remainder / 60;
+                        string age = day.ToString() + " Day" + (day > 1 ? "s " : " ")
+                            + hour.ToString() + " Hour" + (hour > 1 ? "s " : " ")
+                            + min.ToString() + " Minute" + (min > 1 ? "s " : null);
+                        <td class="col-lg-4">
+                            @Html.DisplayFor(modelItem => age)
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="word-break: break-all;">
+                            @Html.DisplayFor(modelItem => item.PropertyValue)
+                        </td>
+                    }
+                        }
+                    </tr>
+
+                    if (checker == true && item.PropertyName == "Second")
+                    {
+                        checker = false;
+                        totalS = total.ToString() + "MB";
+                        <tr>
+                            <td>
+                                @Html.DisplayName("Total Memory")
+                            </td>
+                            <td class="col-lg-4">
+                                @Html.DisplayFor(modelItem => totalS)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-4">
+                                @Html.DisplayName("Total Hard Drive")
+                            </td>
+                            <td class="col-lg-4">
+                                @{
+                        var t = totalDiskSize.ToString() + "GB";
+                                }
+                                @Html.DisplayFor(modelItem => t)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-lg-4">
+                                @Html.DisplayName("Local Time")
+                            </td>
+                            <td class="col-lg-4">
+                                @Html.DisplayFor(modelItem => localTime)
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    }
+}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/Scripts/SaveInfor.js")
+
+<script>
+    //Developed by: Silverio Atos Jr.
+    //Address: Banquerohan, Legazpi City
+    $(function () {
+        $("#Save").click(function () {
+           
+            var lines = $('#first td').map(function (index, td) {
+                        return $(td).text();
+                    });
+            alert(lines[0] + ' ' + lines[1] + lines[2] + ' ' + lines[3] + ' ' + lines[4] + ' ' + lines[6]);
+            //$('#first td').each(function () {
+            //    var cellText = $(this).html();
+            //    alert(cellText);
+            //});
+
+
+           
+        });
+    });
+</script>
+}

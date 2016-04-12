@@ -1,0 +1,81 @@
+﻿@model IEnumerable<TechHelperPOC.Web.Models.SystemInfo>
+
+@{
+    ViewBag.Title = "Operating System";
+}
+
+@{
+
+    if (ViewBag.Message != "Search Computer!")
+    {
+        <div class="well" style="margin-top:17px;">
+            <h3>@ViewBag.Machine Operating System</h3>
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PropertyName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PropertyValue)
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    string PropertyNameSplit;
+                    PropertyNameSplit = string.Concat(item.PropertyName.Select(c => char.IsUpper(c) ? " " + c.ToString() : c.ToString()))
+                            .TrimStart();
+                    <tr>
+                 @{
+                    if (item.Sequence == 1)
+                    {
+                        <td class="alert-info">
+                            @Html.DisplayName("Name")
+                        </td>
+                        <td class="alert-info">
+                            @Html.DisplayFor(modelItem => item.PropertyValue)
+                        </td>
+                    }
+
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => PropertyNameSplit)
+                        </td>
+                        if (item.PropertyName == "InstallDate")
+                        {
+                            var year = item.PropertyValue.Substring(0, 4);
+                            var month = item.PropertyValue.Substring(4, 2);
+                            var day = item.PropertyValue.Substring(6, 2);
+                            var hour = item.PropertyValue.Substring(8, 2);
+                            var minute = item.PropertyValue.Substring(10, 2);
+                            var second = item.PropertyValue.Substring(12, 2);
+                            var dateTime = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+                            <td>
+                                @Html.DisplayFor(modelItem => dateTime)
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PropertyValue)
+                            </td>
+                        }
+                    }
+                }
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+ }
+@*<div id='myModal' class='modal'>
+    <div class="modal-dialog" style="width:150px; padding:0px; margin-top:10%;">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/Scripts/SaveInfor.js")
+}*@

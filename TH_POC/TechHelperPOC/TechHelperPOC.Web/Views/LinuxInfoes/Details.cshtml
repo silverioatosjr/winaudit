@@ -1,0 +1,117 @@
+﻿@model TechHelperPOC.Web.Models.LinuxInfo
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="well">
+    <h2>Details</h2>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="input-group-sm">
+               
+                <span>
+                        @Html.ActionLink("Back to List", "Index", "LinuxInfoes", null, htmlAttributes: new { @class = "form-control btn btn-info" })
+                </span>
+            
+            </div>
+        </div>
+        <div class="col-md-2 pull-right">
+            <div class="input-group-sm" style="float:right">
+                <span>
+                    @Html.ActionLink("Upload Linux audit script", "Create", "LinuxInfoes", null, htmlAttributes: new { @class = "form-control btn btn-info" })
+                </span>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+       
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Technician)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Technician)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Client)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Client)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Site)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Site)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MachineName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MachineName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ScannedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ScannedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FileName)
+        </dd>
+
+    </dl>
+</div>
+
+            @Html.Raw(HttpUtility.HtmlDecode(Model.HtmlFile))
+<div class="well">
+    
+    <div class="row">
+        <div class="col-md-2">
+            <div class="input-group-sm">
+
+                <span>
+                    @Html.ActionLink("Back to List", "Index", "LinuxInfoes", null, htmlAttributes: new { @class = "form-control btn btn-info" })
+                </span>
+
+            </div>
+        </div>
+        <div class="col-md-2 pull-right">
+            <div class="input-group-sm" style="float:right">
+                <span>
+                    @Html.ActionLink("Upload Linux audit script", "Create", "LinuxInfoes", null, htmlAttributes: new { @class = "form-control btn btn-info" })
+                </span>
+
+            </div>
+        </div>
+    </div>
+</div>

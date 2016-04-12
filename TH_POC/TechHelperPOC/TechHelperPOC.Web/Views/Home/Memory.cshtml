@@ -1,0 +1,91 @@
+﻿@model IEnumerable<TechHelperPOC.Web.Models.SystemInfo>
+
+@{
+
+    if (ViewBag.Message != "Search Computer!") {
+<div class="well" style="margin-top:17px;">
+    <h3>@ViewBag.Machine Memory</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyValue)
+            </th>
+        </tr>
+        @{
+            var total = new float();
+            var totalS = string.Empty;
+        }
+        @foreach (var item in Model)
+        {
+            string PropertyNameSplit;
+            PropertyNameSplit = string.Concat(item.PropertyName.Select(c => char.IsUpper(c) ? " " + c.ToString() : c.ToString()))
+                    .TrimStart();
+            <tr>
+                @if (item.PropertyName == "BankLabel")
+                {
+                    <td class="alert-info">
+                        @Html.DisplayFor(modelItem => PropertyNameSplit)
+                    </td>
+                    <td class="alert-info">
+                        @Html.DisplayFor(modelItem => item.PropertyValue)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => PropertyNameSplit)
+                    </td>
+                    if (item.PropertyName == "Capacity")
+                    {
+                        total += (item.PropertyValue.AsFloat()) / (1024 * 1024);
+                        var memory = ((item.PropertyValue.AsFloat()) / (1024 * 1024)).ToString() + " MB";
+                        <td>
+                            @Html.DisplayFor(modelItem => memory)
+                        </td>
+                    }
+                    else if (item.PropertyName == "FreePhysicalMemory")
+                    {
+                        var freeMemory = (item.PropertyValue.AsInt() / 1024).ToString() + " MB";
+                        <td>
+                            @Html.DisplayFor(modelItem => freeMemory)
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PropertyValue)
+                        </td>
+                    }
+                }
+
+            </tr>
+        }
+
+        @{
+            totalS = total.ToString() + " MB";
+            <tr>
+                <td>
+                    @Html.DisplayName("Total Memory")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => totalS)
+                </td>
+            </tr>
+        }
+        </table>
+    </div>
+    }   
+}
+<div id='myModal' class='modal'>
+    <div class="modal-dialog" style="width:150px; padding:0px; margin-top:10%;">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @Scripts.Render("~/Scripts/SaveInfor.js")
+}

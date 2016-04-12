@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.Label("TechHelper",new { @class = "navbar-brand"})
+            </div>
+            <div class="navbar-collapse collapse" id="mainnav">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Windows Machines
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Uploaded Files", "Index", "Home")</li>
+                            @*<li>@Html.ActionLink("Upload Scripts", "Report", "Home")</li>*@
+                            @*<li>@Html.ActionLink("Script Results", "Report", "Home")</li>*@
+                            @*<li>@Html.ActionLink("Last Scanned Report", "Report", "Home")</li>*@
+                        </ul>
+                    </li>
+                    
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Linux Machines
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Uploaded Script Files", "Index", "LinuxInfoes")</li>
+                            <li>@Html.ActionLink("Upload Script File", "Create", "LinuxInfoes")</li>
+                            <li>@Html.ActionLink("Last Scanned Report", "Report", "LinuxInfoes")</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <span id="log">@Html.Partial("_LoginPartial")</span> 
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        
+        @RenderBody()
+           
+    </div>
+
+    
+    <hr />
+    
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    
+    <script language="javascript" type="text/javascript">
+    function GetScannedDate(machinename) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#scannedDate").html(procemessage).show();
+        var url = "/Home/GetScannedDate";
+
+        $.ajax({
+            url: url,
+            data: { macAddress: machinename },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select Date</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#scannedDate").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+
+    function GetMacAddress(machinename) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#macAddress").html(procemessage).show();
+        var url = "/Home/GetMacAddress";
+
+        $.ajax({
+            url: url,
+            data: { machineName: machinename },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select MacAddress</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].Value + ">" + data[x].Text + "</option>";
+                }
+                $("#macAddress").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+    //function LoadInfo() {
+    //    $("#search").click();
+        
+
+    //}
+    </script>
+</body>
+</html>
